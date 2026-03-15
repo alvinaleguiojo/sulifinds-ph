@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuliFinds PH — Sulit Finds Para Sa Inyo!</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --gold:#FFB800;--amber:#FF6B00;--deep:#1A0A00;--warm:#FFF8EE;--muted:#8B6A4A;--border:rgba(255,140,0,0.15);--radius:16px; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--warm);color:var(--deep);overflow-x:hidden;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(255,248,238,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--deep);text-decoration:none;}
+  .logo-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--amber));display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .nav-links{display:flex;gap:28px;list-style:none;}
+  .nav-links a{text-decoration:none;color:var(--muted);font-size:14px;font-weight:500;transition:color .2s;}
+  .nav-links a:hover{color:var(--amber);}
+  .nav-right{display:flex;align-items:center;gap:10px;}
+  .cart-btn{position:relative;background:none;border:none;cursor:pointer;font-size:22px;padding:6px;}
+  .cart-count{position:absolute;top:0;right:0;background:var(--amber);color:white;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+  .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+  .hamburger span{display:block;width:24px;height:2px;background:var(--deep);border-radius:2px;}
+  .mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:rgba(255,248,238,0.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:99;padding:16px 20px;flex-direction:column;}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{display:block;padding:13px 0;font-size:15px;font-weight:500;color:var(--deep);text-decoration:none;border-bottom:1px solid var(--border);}
+  .btn{padding:11px 22px;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;border:none;font-family:'Plus Jakarta Sans',sans-serif;}
+  .btn-primary{background:linear-gradient(135deg,var(--gold),var(--amber));color:white;box-shadow:0 4px 16px rgba(255,107,0,.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,107,0,.4);}
+  .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--deep);}
+  .btn-outline:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-lg{padding:14px 28px;font-size:15px;}
+  .hero{min-height:100vh;display:flex;align-items:center;padding:90px 20px 60px;position:relative;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 70% 50%,rgba(255,184,0,.15) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 20% 80%,rgba(255,107,0,.1) 0%,transparent 60%);}
+  .hero-pattern{position:absolute;inset:0;z-index:0;opacity:.04;background-image:radial-gradient(circle,var(--amber) 1px,transparent 1px);background-size:32px 32px;}
+  .hero-content{position:relative;z-index:1;max-width:580px;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,184,0,.15);border:1px solid rgba(255,184,0,.3);color:var(--amber);padding:6px 16px;border-radius:50px;font-size:13px;font-weight:600;margin-bottom:24px;animation:fadeUp .6s ease both;}
+  .hero h1{font-family:'Syne',sans-serif;font-size:clamp(38px,8vw,68px);font-weight:800;line-height:1.05;margin-bottom:20px;animation:fadeUp .6s ease .1s both;}
+  .hero h1 span{background:linear-gradient(135deg,var(--gold),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero p{font-size:16px;color:var(--muted);line-height:1.7;margin-bottom:32px;animation:fadeUp .6s ease .2s both;}
+  .hero-btns{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .6s ease .3s both;}
+  .hero-stats{display:flex;gap:32px;margin-top:44px;animation:fadeUp .6s ease .4s both;}
+  .stat-num{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .stat-label{font-size:12px;color:var(--muted);font-weight:500;}
+  .marquee-wrap{background:linear-gradient(135deg,var(--gold),var(--amber));padding:12px 0;overflow:hidden;}
+  .marquee-track{display:flex;white-space:nowrap;animation:marquee 22s linear infinite;}
+  .marquee-item{display:inline-flex;align-items:center;gap:10px;color:white;font-size:13px;font-weight:600;padding:0 24px;}
+  .marquee-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5);}
+  .search-section{padding:40px 20px 0;}
+  .search-box{max-width:620px;margin:0 auto;position:relative;}
+  .search-input{width:100%;padding:16px 120px 16px 20px;border-radius:50px;border:2px solid var(--border);background:white;font-size:15px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--deep);outline:none;transition:border-color .2s;box-shadow:0 4px 20px rgba(255,107,0,.08);}
+  .search-input:focus{border-color:var(--amber);}
+  .search-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,var(--gold),var(--amber));border:none;border-radius:50px;padding:10px 20px;color:white;font-weight:600;cursor:pointer;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;}
+  .section{padding:60px 20px;}
+  .section-header{text-align:center;margin-bottom:40px;}
+  .section-tag{display:inline-block;color:var(--amber);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+  .section-title{font-family:'Syne',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;line-height:1.15;}
+  .categories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;max-width:900px;margin:0 auto;}
+  .cat-card{background:white;border-radius:var(--radius);padding:20px 12px;text-align:center;border:1.5px solid var(--border);cursor:pointer;transition:all .25s;}
+  .cat-card:hover{border-color:var(--amber);transform:translateY(-3px);box-shadow:0 8px 24px rgba(255,107,0,.12);}
+  .cat-emoji{font-size:30px;margin-bottom:8px;}
+  .cat-name{font-size:12px;font-weight:600;color:var(--deep);}
+  .products-section{background:white;}
+  .filter-row{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;margin-bottom:32px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+  .filter-row::-webkit-scrollbar{display:none;}
+  .filter-btn{padding:8px 18px;border-radius:50px;border:1.5px solid var(--border);background:none;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap;flex-shrink:0;}
+  .filter-btn.active,.filter-btn:hover{background:linear-gradient(135deg,var(--gold),var(--amber));color:white;border-color:transparent;}
+  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px;}
+  .product-card{background:var(--warm);border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--border);transition:all .25s;cursor:pointer;}
+  .product-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(255,107,0,.12);border-color:var(--amber);}
+  .product-img{width:100%;height:180px;display:flex;align-items:center;justify-content:center;background:white;position:relative;overflow:hidden;}
+  .product-img img{width:100%;height:100%;object-fit:cover;}
+  .product-img-ph{font-size:56px;}
+  .product-badge{position:absolute;top:10px;left:10px;background:var(--amber);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;}
+  .product-info{padding:14px;}
+  .product-name{font-size:13px;font-weight:600;color:var(--deep);margin-bottom:6px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .product-rating{display:flex;align-items:center;gap:4px;margin-bottom:10px;}
+  .stars{color:var(--gold);font-size:11px;}
+  .rating-count{font-size:11px;color:var(--muted);}
+  .product-price-row{display:flex;align-items:center;justify-content:space-between;}
+  .product-price{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--amber);}
+  .product-old{font-size:11px;color:var(--muted);text-decoration:line-through;}
+  .add-btn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--amber));border:none;color:white;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 4px 12px rgba(255,107,0,.3);flex-shrink:0;}
+  .add-btn:hover{transform:scale(1.1);}
+  .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:16px;}
+  .spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--amber);border-radius:50%;animation:spin .8s linear infinite;}
+  .loading-text{color:var(--muted);font-size:14px;}
+  .empty-box{text-align:center;padding:60px 20px;grid-column:1/-1;}
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:white;border-radius:24px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative;}
+  .modal-img-wrap{width:100%;height:260px;overflow:hidden;border-radius:24px 24px 0 0;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:80px;}
+  .modal-img-wrap img{width:100%;height:100%;object-fit:cover;}
+  .modal-body{padding:22px;}
+  .modal-name{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;margin-bottom:8px;line-height:1.3;}
+  .modal-price{font-size:26px;font-weight:800;color:var(--amber);}
+  .modal-old{font-size:13px;color:var(--muted);text-decoration:line-through;margin-bottom:14px;}
+  .modal-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:18px;}
+  .modal-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+  .modal-tag{font-size:11px;background:rgba(255,184,0,.1);color:var(--amber);padding:4px 10px;border-radius:20px;}
+  .modal-btns{display:flex;gap:10px;}
+  .modal-close-btn{position:absolute;top:14px;right:14px;background:white;border:none;border-radius:50%;width:34px;height:34px;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:1;}
+  .promo-banner{margin:0 16px 60px;border-radius:20px;background:linear-gradient(135deg,var(--deep) 0%,#3D1A00 100%);padding:40px 28px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;gap:20px;}
+  .promo-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(255,184,0,.15),transparent);}
+  .promo-content{position:relative;z-index:1;}
+  .promo-tag{color:var(--gold);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+  .promo-title{font-family:'Syne',sans-serif;font-size:clamp(22px,5vw,32px);font-weight:800;color:white;margin-bottom:12px;line-height:1.2;}
+  .promo-desc{color:rgba(255,255,255,.6);font-size:14px;margin-bottom:20px;}
+  .promo-visual{position:relative;z-index:1;font-size:70px;flex-shrink:0;}
+  .features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;}
+  .feature-card{background:white;border-radius:var(--radius);padding:24px 20px;border:1.5px solid var(--border);text-align:center;}
+  .feature-icon{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,rgba(255,184,0,.15),rgba(255,107,0,.1));display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px;}
+  .feature-title{font-size:14px;font-weight:600;color:var(--deep);margin-bottom:6px;}
+  .feature-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+  .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;}
+  .cart-overlay.open{opacity:1;pointer-events:all;}
+  .cart-sidebar{position:fixed;top:0;right:0;bottom:0;width:360px;background:white;z-index:201;padding:24px;transform:translateX(100%);transition:transform .3s;overflow-y:auto;display:flex;flex-direction:column;}
+  .cart-sidebar.open{transform:translateX(0);}
+  .cart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .cart-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
+  .close-btn{background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);}
+  .cart-items{flex:1;}
+  .cart-empty{text-align:center;padding:50px 0;color:var(--muted);}
+  .cart-empty-icon{font-size:44px;margin-bottom:10px;}
+  .cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);}
+  .cart-item-img{width:56px;height:56px;display:flex;align-items:center;justify-content:center;background:var(--warm);border-radius:12px;flex-shrink:0;overflow:hidden;font-size:28px;}
+  .cart-item-img img{width:100%;height:100%;object-fit:cover;}
+  .cart-item-info{flex:1;min-width:0;}
+  .cart-item-name{font-size:12px;font-weight:600;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cart-item-price{font-size:14px;font-weight:700;color:var(--amber);}
+  .qty-control{display:flex;align-items:center;gap:8px;margin-top:6px;}
+  .qty-btn{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border);background:none;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .qty-btn:hover{border-color:var(--amber);color:var(--amber);}
+  .qty-num{font-size:13px;font-weight:600;}
+  .remove-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;margin-left:auto;}
+  .cart-footer{padding-top:16px;}
+  .cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .cart-total-label{font-size:15px;font-weight:600;}
+  .cart-total-price{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--amber);}
+  footer{background:var(--deep);color:white;padding:50px 20px 130px;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+  .footer-brand-desc{color:rgba(255,255,255,.5);font-size:13px;line-height:1.7;margin:14px 0 20px;}
+  .footer-social{display:flex;gap:10px;}
+  .social-btn{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;border:none;transition:background .2s;}
+  .social-btn:hover{background:var(--amber);}
+  .footer-heading{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:16px;}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .footer-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:13px;transition:color .2s;}
+  .footer-links a:hover{color:var(--gold);}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  .footer-copy{font-size:12px;color:rgba(255,255,255,.3);}
+  .bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:100;justify-content:space-around;align-items:center;}
+  .bottom-nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'Plus Jakarta Sans',sans-serif;padding:4px 12px;}
+  .bottom-nav-item.active{color:var(--amber);}
+  .bottom-nav-icon{font-size:20px;}
+  .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--deep);color:white;padding:12px 24px;border-radius:50px;font-size:13px;font-weight:500;z-index:500;transition:transform .3s;box-shadow:0 8px 32px rgba(0,0,0,.2);white-space:nowrap;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media(max-width:768px){
+    nav{padding:10px 16px;}
+    .nav-links,.nav-right .btn-outline{display:none;}
+    .hamburger{display:flex;}
+    .hero{padding:80px 16px 50px;text-align:center;justify-content:center;min-height:auto;}
+    .hero-content{max-width:100%;}
+    .hero-btns{justify-content:center;}
+    .hero-btns .btn-lg{flex:1;text-align:center;padding:13px 16px;font-size:14px;}
+    .hero-stats{justify-content:center;gap:24px;margin-top:32px;}
+    .search-section{padding:28px 16px 0;}
+    .search-input{padding-right:100px;}
+    .section{padding:44px 16px;}
+    .categories-grid{grid-template-columns:repeat(3,1fr);gap:10px;}
+    .cat-card{padding:16px 8px;}
+    .cat-emoji{font-size:26px;}
+    .cat-name{font-size:11px;}
+    .products-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+    .product-img{height:140px;}
+    .product-info{padding:10px;}
+    .product-name{font-size:12px;}
+    .product-price{font-size:15px;}
+    .add-btn{width:28px;height:28px;font-size:16px;}
+    .promo-banner{flex-direction:column;padding:28px 20px;margin:0 12px 48px;text-align:center;}
+    .promo-visual{font-size:50px;}
+    .features-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+    .feature-card{padding:18px 14px;}
+    .footer-grid{grid-template-columns:1fr 1fr;gap:24px;}
+    footer{padding-bottom:max(110px,calc(90px + env(safe-area-inset-bottom)));}
+    .footer-bottom{flex-direction:column;text-align:center;}
+    .cart-sidebar{width:100%;border-radius:20px 20px 0 0;top:auto;height:88vh;}
+    .modal-overlay{padding:0;align-items:flex-end;}
+    .modal{border-radius:24px 24px 0 0;max-height:92vh;}
+    .bottom-nav{display:flex;}
+  }
+  @media(max-width:380px){
+    .hero-btns{flex-direction:column;}
+    .footer-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<script>
+  // =============================================
+  // CONFIG — CHANGE YOUR API KEY AFTER TESTING
+  // =============================================
+  // ============================================
+  // CONFIG — API calls go through Netlify Function
+  // No CORS issues, no exposed API key!
+  // ============================================
+  const PHP = 57;
+
+  async function cjGet(path) {
+    try {
+      // Parse path and query params
+      const [basePath, queryString] = path.split('?');
+      let url = `/.netlify/functions/cj-proxy?path=${encodeURIComponent(basePath)}`;
+      if (queryString) {
+        // Append each param individually
+        queryString.split('&').forEach(param => {
+          const [k, v] = param.split('=');
+          if (k && v) url += `&${k}=${v}`;
+        });
+      }
+      const r = await fetch(url);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return await r.json();
+    } catch(e) {
+      console.error('CJ API error:', e.message);
+      return null;
+    }
+  }
+
+  // =============================================
+  // APP STATE
+  // =============================================
+  let cart = [], page = 1, kw = 'kitchen gadget', catId = '', loading = false;
+
+  window.addEventListener('load', async () => { 
+    showStatus('connecting'); 
+    await loadCats(); 
+    await loadProds(); 
+  });
+
+function showStatus(s) {
+  const el = document.getElementById('apiStatus');
+  if (el) el.remove();
+  if (s === 'connecting') {
+    const b = document.createElement('div');
+    b.id = 'apiStatus';
+    b.style.cssText = 'position:fixed;top:62px;left:0;right:0;z-index:98;background:var(--gold);color:var(--deep);text-align:center;padding:7px;font-size:12px;font-weight:600;';
+    b.textContent = '🔄 Connecting to CJDropshipping...';
+    document.body.appendChild(b);
+  } else if (s === 'ok') {
+    const b = document.getElementById('apiStatus');
+    if (b) setTimeout(() => b.remove(), 2000);
+    if (document.getElementById('apiStatus')) document.getElementById('apiStatus').textContent = '✅ Connected to CJDropshipping!';
+  } else if (s === 'err') {
+    const b = document.createElement('div');
+    b.id = 'apiStatus';
+    b.style.cssText = 'position:fixed;top:62px;left:0;right:0;z-index:98;background:var(--amber);color:white;text-align:center;padding:7px;font-size:12px;font-weight:600;cursor:pointer;';
+    b.innerHTML = '⚠️ API not connected — showing demo products. Tap to retry.';
+    b.onclick = () => { b.remove(); loadProds(); };
+    document.body.appendChild(b);
+  }
+}
+
+  // CATEGORIES
+  async function loadCats() {
+    const d = await cjGet('/product/getCategory');
+    const g = document.getElementById('catsGrid');
+    const emo = ['🏠','💄','👗','📱','🍳','💪','🎮','👶','🐾','⚙️','🌱','✈️'];
+    if (d && d.data && d.data.length) {
+      g.innerHTML = d.data.slice(0,12).map((c,i) => `
+        <div class="cat-card" onclick="filterCat('${c.categoryId}','${c.categoryName}')">
+          <div class="cat-emoji">${emo[i]||'🛍️'}</div>
+          <div class="cat-name">${c.categoryName}</div>
+        </div>`).join('');
+    } else {
+      g.innerHTML = [['🍳','Kitchen','kitchen gadget'],['💄','Beauty','skincare'],['🏠','Home','home organizer'],['💪','Health','fitness'],['📱','Phone','phone case'],['👗','Fashion','clothing']].map(([e,n,k])=>`
+        <div class="cat-card" onclick="filterKw('${k}','${n}')">
+          <div class="cat-emoji">${e}</div><div class="cat-name">${n}</div>
+        </div>`).join('');
+    }
+  }
+</script>
+
+<nav>
+  <a href="#" class="logo"><div class="logo-icon">🛒</div>SuliFinds PH</a>
+  <ul class="nav-links">
+    <li><a href="#categories">Categories</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="toggleCart()">🛒<span class="cart-count" id="cartCount">0</span></button>
+    <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#categories" onclick="toggleMenu()">🗂️ Categories</a>
+  <a href="#products" onclick="toggleMenu()">🛍️ Products</a>
+  <a href="#about" onclick="toggleMenu()">ℹ️ About</a>
+</div>
+
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-pattern"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🇵🇭 Powered by CJDropshipping</div>
+    <h1>Sulit Finds<br>Para Sa <span>Inyo!</span></h1>
+    <p>Browse millions of real products from CJDropshipping — all in one beautiful Filipino store. Delivered anywhere in the Philippines!</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary btn-lg" onclick="scrollTo('products')">Shop Now 🛍️</button>
+      <button class="btn btn-outline btn-lg" onclick="scrollTo('categories')">Browse Categories</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">1M+</div><div class="stat-label">Products</div></div>
+      <div><div class="stat-num">4.9★</div><div class="stat-label">Rating</div></div>
+      <div><div class="stat-num">PH-wide</div><div class="stat-label">Delivery</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap"><div class="marquee-track">
+  <span class="marquee-item">🚚 Ships PH Nationwide <span class="marquee-dot"></span></span>
+  <span class="marquee-item">✅ Powered by CJDropshipping <span class="marquee-dot"></span></span>
+  <span class="marquee-item">💳 COD Available <span class="marquee-dot"></span></span>
+  <span class="marquee-item">🔄 Easy Returns <span class="marquee-dot"></span></span>
+  <span class="marquee-item">⭐ 1M+ Products <span class="marquee-dot"></span></span>
+  <span class="marquee-item">🇵🇭 Proudly Filipino Shop <span class="marquee-dot"></span></span>
+  <span class="marquee-item">🚚 Ships PH Nationwide <span class="marquee-dot"></span></span>
+  <span class="marquee-item">✅ Powered by CJDropshipping <span class="marquee-dot"></span></span>
+  <span class="marquee-item">💳 COD Available <span class="marquee-dot"></span></span>
+  <span class="marquee-item">🔄 Easy Returns <span class="marquee-dot"></span></span>
+  <span class="marquee-item">⭐ 1M+ Products <span class="marquee-dot"></span></span>
+  <span class="marquee-item">🇵🇭 Proudly Filipino Shop <span class="marquee-dot"></span></span>
+</div></div>
+
+<div class="search-section">
+  <div class="search-box">
+    <input class="search-input" id="searchInput" type="text" placeholder="Search products... (e.g. phone case, skincare, kitchen gadget)" onkeydown="if(event.key==='Enter')doSearch()">
+    <button class="search-btn" onclick="doSearch()">Search 🔍</button>
+  </div>
+</div>
+
+<section class="section" id="categories">
+  <div class="section-header">
+    <div class="section-tag">Browse by Category</div>
+    <h2 class="section-title">Shop What You Love</h2>
+  </div>
+  <div class="categories-grid" id="catsGrid">
+    <div class="loading" style="grid-column:1/-1"><div class="spinner"></div><div class="loading-text">Loading categories...</div></div>
+  </div>
+</section>
+
+<section class="section products-section" id="products">
+  <div class="section-header">
+    <div class="section-tag" id="pTag">Trending Now</div>
+    <h2 class="section-title" id="pTitle">Sulit Picks Para Sa Iyo</h2>
+  </div>
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="quickFilter(this,'kitchen gadget','Kitchen 🍳')">🍳 Kitchen</button>
+    <button class="filter-btn" onclick="quickFilter(this,'beauty skincare','Beauty 💄')">💄 Beauty</button>
+    <button class="filter-btn" onclick="quickFilter(this,'home organizer','Home 🏠')">🏠 Home</button>
+    <button class="filter-btn" onclick="quickFilter(this,'fitness health','Health 💪')">💪 Health</button>
+    <button class="filter-btn" onclick="quickFilter(this,'phone accessories','Phone 📱')">📱 Phone</button>
+    <button class="filter-btn" onclick="quickFilter(this,'fashion clothing','Fashion 👗')">👗 Fashion</button>
+    <button class="filter-btn" onclick="quickFilter(this,'pet supplies','Pets 🐾')">🐾 Pets</button>
+  </div>
+  <div class="products-grid" id="prodsGrid">
+    <div class="loading" style="grid-column:1/-1"><div class="spinner"></div><div class="loading-text">Loading from CJDropshipping...</div></div>
+  </div>
+  <div style="text-align:center;margin-top:32px">
+    <button class="btn btn-outline" id="loadMoreBtn" onclick="loadMore()" style="display:none;padding:13px 32px">Load More Products</button>
+  </div>
+</section>
+
+<div class="promo-banner">
+  <div class="promo-bg"></div>
+  <div class="promo-content">
+    <div class="promo-tag">⚡ Limited Time Offer</div>
+    <div class="promo-title">Get 20% Off<br>Your First Order!</div>
+    <div class="promo-desc">Use code <strong style="color:var(--gold)">SULIFINDS20</strong> at checkout.</div>
+    <button class="btn btn-primary" onclick="scrollTo('products')">Shop Now & Save 🛍️</button>
+  </div>
+  <div class="promo-visual">🎁</div>
+</div>
+
+<section class="section" id="about">
+  <div class="section-header">
+    <div class="section-tag">Why SuliFinds PH?</div>
+    <h2 class="section-title">Shopping Na Walang Stress</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">🚚</div><div class="feature-title">Nationwide Delivery</div><div class="feature-desc">We ship everywhere in PH. Metro Manila 1–3 days, provincial 3–7 days.</div></div>
+    <div class="feature-card"><div class="feature-icon">💳</div><div class="feature-title">COD Available</div><div class="feature-desc">Cash on Delivery! Pay when your package arrives at your door.</div></div>
+    <div class="feature-card"><div class="feature-icon">✅</div><div class="feature-title">1M+ Products</div><div class="feature-desc">Access millions of products directly from CJDropshipping's global catalog.</div></div>
+    <div class="feature-card"><div class="feature-icon">🔄</div><div class="feature-title">Easy Returns</div><div class="feature-desc">Hassle-free returns within 7 days if you're not satisfied.</div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;"><div class="logo-icon">🛒</div><span style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;">SuliFinds PH</span></div>
+      <p class="footer-brand-desc">Sulit finds para sa inyong pera! Powered by CJDropshipping — quality products, unbeatable prices, delivered nationwide.</p>
+      <div class="footer-social"><button class="social-btn">🎵</button><button class="social-btn">📘</button><button class="social-btn">📸</button><button class="social-btn">💬</button></div>
+    </div>
+    <div>
+      <div class="footer-heading">Shop</div>
+      <ul class="footer-links"><li><a href="#products">All Products</a></li><li><a href="#categories">Categories</a></li><li><a href="#">Flash Deals</a></li><li><a href="#">New Arrivals</a></li></ul>
+    </div>
+    <div>
+      <div class="footer-heading">Contact</div>
+      <ul class="footer-links"><li><a href="#">📧 <span class="__cf_email__" data-cfemail="047771686d626d6a6077746c446369656d682a676b69">[email&#160;protected]</span></a></li><li><a href="#">📱 @sulifindsph</a></li><li><a href="#">🎵 TikTok Shop</a></li><li><a href="#">🇵🇭 Naga, Cebu</a></li></ul>
+    </div>
+  </div>
+  <div class="footer-bottom"><div class="footer-copy">© 2026 SuliFinds PH. All rights reserved.</div><div class="footer-copy">Powered by CJDropshipping 🛒 | Made in 🇵🇭</div></div>
+</footer>
+
+<div class="bottom-nav">
+  <button class="bottom-nav-item active" onclick="window.scrollTo({top:0,behavior:'smooth'})"><span class="bottom-nav-icon">🏠</span>Home</button>
+  <button class="bottom-nav-item" onclick="scrollTo('categories')"><span class="bottom-nav-icon">🗂️</span>Category</button>
+  <button class="bottom-nav-item" onclick="scrollTo('products')"><span class="bottom-nav-icon">🛍️</span>Products</button>
+  <button class="bottom-nav-item" onclick="toggleCart()"><span class="bottom-nav-icon">🛒</span>Cart</button>
+</div>
+
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header"><div class="cart-title">Your Cart 🛒</div><button class="close-btn" onclick="toggleCart()">✕</button></div>
+  <div class="cart-items" id="cartItems"><div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Your cart is empty!</p><p style="font-size:12px;margin-top:6px">Add some sulit finds!</p></div></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total"><span class="cart-total-label">Total</span><span class="cart-total-price" id="cartTotal">₱0</span></div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;font-size:15px;border-radius:14px" onclick="checkout()">Checkout Now 🛍️</button>
+    <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:10px">COD & GCash accepted 🇵🇭</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"><div id="modalBody"></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+// PRODUCTS
+async function loadProds(reset=true) {
+  if (loading) return; loading = true;
+  if (reset) { page=1; document.getElementById('prodsGrid').innerHTML=`<div class="loading" style="grid-column:1/-1"><div class="spinner"></div><div class="loading-text">Loading from CJDropshipping...</div></div>`; }
+  let ep = `/product/listV2?page=${page}&size=12`;
+  if (kw) ep += `&keyWord=${encodeURIComponent(kw)}`;
+  if (catId) ep += `&categoryId=${catId}`;
+  const d = await cjGet(ep);
+  loading = false;
+  const list = d?.data?.list;
+  if (!list || !list.length) {
+    showStatus('err');
+    if (reset) {
+      // Show demo products as fallback
+      const demos = [
+        {pid:'d1',name:'Non-stick Kitchen Pan Set',price:299,old:599,img:'',emoji:'🍳'},
+        {pid:'d2',name:'Aesthetic Skincare Organizer',price:189,old:350,img:'',emoji:'🪞'},
+        {pid:'d3',name:'Mini Massage Gun Pro',price:799,old:1499,img:'',emoji:'💆'},
+        {pid:'d4',name:'Space-Saving Cabinet Organizer',price:249,old:480,img:'',emoji:'🗂️'},
+        {pid:'d5',name:'Magnetic Phone Case',price:149,old:299,img:'',emoji:'📱'},
+        {pid:'d6',name:'LED Vanity Mirror',price:599,old:1200,img:'',emoji:'💄'},
+        {pid:'d7',name:'Resistance Band Set',price:199,old:399,img:'',emoji:'💪'},
+        {pid:'d8',name:'WiFi Security Camera',price:849,old:1500,img:'',emoji:'📷'},
+      ];
+      document.getElementById('prodsGrid').innerHTML = demos.map(p => `
+        <div class="product-card">
+          <div class="product-img"><span style="font-size:56px">${p.emoji}</span><span class="product-badge">Sulit!</span></div>
+          <div class="product-info">
+            <div class="product-name">${p.name}</div>
+            <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">4.8 (${Math.floor(Math.random()*200+50)})</span></div>
+            <div class="product-price-row">
+              <div><div class="product-price">₱${p.price.toLocaleString()}</div><div class="product-old">₱${p.old.toLocaleString()}</div></div>
+              <button class="add-btn" onclick="addCart('${p.pid}','${encodeURIComponent(p.name)}','','${p.price}')">+</button>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+    document.getElementById('loadMoreBtn').style.display='none';
+    return;
+  }
+  showStatus('ok');
+  const html = list.map(p => {
+    const sp = p.sellPrice||p.productPrice||3;
+    const peso = Math.round(sp*PHP);
+    const old = Math.round(peso*1.45);
+    const img = p.productImage||'';
+    const name = (p.productNameEn||p.productName||'Product').substring(0,60);
+    const pid = p.pid||p.productId||'';
+    const enc = encodeURIComponent(name);
+    return `<div class="product-card" onclick="openModal('${pid}','${enc}','${img}','${peso}','${old}')">
+      <div class="product-img">${img?`<img src="${img}" alt="${name}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=product-img-ph>🛍️</span>'">`:`<span class="product-img-ph">🛍️</span>`}
+      <span class="product-badge">Sulit!</span></div>
+      <div class="product-info">
+        <div class="product-name">${name}</div>
+        <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">4.8 (${Math.floor(Math.random()*200+30)})</span></div>
+        <div class="product-price-row">
+          <div><div class="product-price">₱${peso.toLocaleString()}</div><div class="product-old">₱${old.toLocaleString()}</div></div>
+          <button class="add-btn" onclick="event.stopPropagation();addCart('${pid}','${enc}','${img}','${peso}')">+</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  if (reset) document.getElementById('prodsGrid').innerHTML=html;
+  else document.getElementById('prodsGrid').innerHTML+=html;
+  document.getElementById('loadMoreBtn').style.display=list.length>=12?'inline-block':'none';
+}
+
+async function doSearch() {
+  const v = document.getElementById('searchInput').value.trim();
+  if (!v) return;
+  kw=v; catId='';
+  document.getElementById('pTag').textContent='Search Results';
+  document.getElementById('pTitle').textContent=`Results for "${v}"`;
+  scrollTo('products');
+  await loadProds();
+}
+
+async function quickFilter(btn, keyword, label) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  kw=keyword; catId='';
+  document.getElementById('pTag').textContent=label;
+  document.getElementById('pTitle').textContent=`${label} Products`;
+  await loadProds();
+}
+
+async function filterCat(id, name) {
+  catId=id; kw='';
+  document.getElementById('pTag').textContent=name;
+  document.getElementById('pTitle').textContent=`${name} Products`;
+  scrollTo('products');
+  await loadProds();
+}
+
+async function filterKw(keyword, label) {
+  kw=keyword; catId='';
+  document.getElementById('pTag').textContent=label;
+  document.getElementById('pTitle').textContent=`${label} Products`;
+  scrollTo('products');
+  await loadProds();
+}
+
+async function loadMore() { page++; await loadProds(false); }
+
+// MODAL
+async function openModal(pid, encName, img, price, old) {
+  const name = decodeURIComponent(encName);
+  document.getElementById('modalBody').innerHTML=`<div class="loading" style="padding:60px"><div class="spinner"></div></div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+  let desc='High quality product sourced from CJDropshipping. Ships nationwide across the Philippines with fast and reliable delivery.';
+  if (pid) {
+    const d = await cjGet(`/product/query?pid=${pid}`);
+    if (d?.data?.description) desc = d.data.description.replace(/<[^>]*>/g,'').substring(0,220)+'...';
+  }
+  document.getElementById('modalBody').innerHTML=`
+    <button class="modal-close-btn" onclick="closeModal()">✕</button>
+    <div class="modal-img-wrap">${img?`<img src="${img}" alt="${name}" onerror="this.parentElement.innerHTML='🛍️'">`:'🛍️'}</div>
+    <div class="modal-body">
+      <div class="modal-name">${name}</div>
+      <div class="modal-price">₱${Number(price).toLocaleString()}</div>
+      <div class="modal-old">₱${Number(old).toLocaleString()} (Save ${Math.round((1-price/old)*100)}%)</div>
+      <div class="modal-desc">${desc}</div>
+      <div class="modal-tags">
+        <span class="modal-tag">🚚 Ships PH-wide</span>
+        <span class="modal-tag">✅ Legit product</span>
+        <span class="modal-tag">💳 COD available</span>
+        <span class="modal-tag">🔄 Easy returns</span>
+      </div>
+      <div class="modal-btns">
+        <button class="btn btn-primary" style="flex:1;padding:14px" onclick="addCart('${pid}','${encName}','${img}','${price}');closeModal()">Add to Cart 🛒</button>
+        <button class="btn btn-outline" style="padding:14px" onclick="closeModal()">Close</button>
+      </div>
+    </div>`;
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+// CART
+function addCart(id, encName, img, price) {
+  const name = decodeURIComponent(encName);
+  const ex = cart.find(i=>i.id===id);
+  if (ex) ex.qty++; else cart.push({id,name,img,price:Number(price),qty:1});
+  updateCart(); toast('✅ '+name.substring(0,20)+'... added!');
+}
+
+function updateCart() {
+  const count = cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartCount').textContent=count;
+  const total = cart.reduce((s,i)=>s+(i.price*i.qty),0);
+  document.getElementById('cartTotal').textContent=`₱${total.toLocaleString()}`;
+  const el = document.getElementById('cartItems');
+  const ft = document.getElementById('cartFooter');
+  if (!cart.length) {
+    el.innerHTML=`<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Your cart is empty!</p><p style="font-size:12px;margin-top:6px">Add some sulit finds!</p></div>`;
+    ft.style.display='none';
+  } else {
+    el.innerHTML=cart.map(i=>`
+      <div class="cart-item">
+        <div class="cart-item-img">${i.img?`<img src="${i.img}" alt="${i.name}" onerror="this.parentElement.textContent='🛍️'">`:'🛍️'}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${i.name}</div>
+          <div class="cart-item-price">₱${(i.price*i.qty).toLocaleString()}</div>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="chQty('${i.id}',-1)">−</button>
+            <span class="qty-num">${i.qty}</span>
+            <button class="qty-btn" onclick="chQty('${i.id}',1)">+</button>
+            <button class="remove-btn" onclick="rmItem('${i.id}')">🗑️</button>
+          </div>
+        </div>
+      </div>`).join('');
+    ft.style.display='block';
+  }
+}
+
+function chQty(id,d){const i=cart.find(x=>x.id===id);if(i){i.qty+=d;if(i.qty<=0)rmItem(id);else updateCart();}}
+function rmItem(id){cart=cart.filter(i=>i.id!==id);updateCart();}
+function toggleCart(){document.getElementById('cartOverlay').classList.toggle('open');document.getElementById('cartSidebar').classList.toggle('open');}
+function checkout(){toast('🛍️ Redirecting to checkout...');setTimeout(toggleCart,1200);}
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
+function scrollTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+</script>
+</body>
+</html>
